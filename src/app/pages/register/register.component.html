@@ -1,0 +1,143 @@
+<div class="h-screen flex items-center justify-center">
+  <form
+    class="shadow-md rounded-md p-5 bg-white w-1/5"
+    [formGroup]="registerForm"
+    (ngSubmit)="register()"
+  >
+    <div class="mb-10 text-center">
+      <h1 class="text-dark mb-3">Create an Account</h1>
+      <div class="text-gray-400 fw-bold fs-4">
+        <label appCustomLabel>Already have an account?</label>
+        <a [routerLink]="['/login']" class="text-sky-500 font-semibold"
+          >Sign In</a
+        >
+      </div>
+    </div>
+    @for (error of errors; track error) {
+    <div
+      class="bg-red-500 border mb-2 flex flex-col gap-2 border-red-400 text-white p-2 rounded-md my-2 relative"
+    >
+      <div class="text-xs">{{ error.description }}</div>
+    </div>
+    }
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email" />
+      <mat-icon matPrefix>email</mat-icon>
+    </mat-form-field>
+    <div
+      class="text-red-400"
+      *ngIf="
+        registerForm.controls['email'].invalid &&
+        (registerForm.controls['email'].touched ||
+          registerForm.controls['email'].dirty)
+      "
+    >
+      <span *ngIf="registerForm.controls['email'].errors?.['required']"
+        >Email is required</span
+      >
+    </div>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Full Name</mat-label>
+      <input matInput placeholder="Full Name" formControlName="fullName" />
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+    <div
+      class="text-red-400"
+      *ngIf="
+        registerForm.controls['fullName'].invalid &&
+        (registerForm.controls['fullName'].touched ||
+          registerForm.controls['fullName'].dirty)
+      "
+    >
+      <span *ngIf="registerForm.controls['fullName'].errors?.['required']"
+        >fullName is required</span
+      >
+      <span *ngIf="registerForm.controls['fullName'].errors?.['minlength']"
+        >Fullname should have at least 4 symbols</span
+      >
+    </div>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="{{ passwordHide ? 'password' : 'text' }}"
+        placeholder="Password"
+        formControlName="password"
+      />
+      <mat-icon matPrefix>lock</mat-icon>
+      <mat-icon matSuffix (click)="passwordHide = !passwordHide">
+        {{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon
+      >
+    </mat-form-field>
+    <div
+      class="text-red-400"
+      *ngIf="
+        registerForm.controls['password'].invalid &&
+        (registerForm.controls['password'].touched ||
+          registerForm.controls['password'].dirty)
+      "
+    >
+      <span *ngIf="registerForm.controls['password'].errors?.['required']"
+        >Password is required</span
+      >
+    </div>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        matInput
+        type="{{ confirmPasswordHide ? 'password' : 'text' }}"
+        placeholder="Confirm Password"
+        formControlName="confirmPassword"
+      />
+      <mat-icon matPrefix>lock</mat-icon>
+      <mat-icon matSuffix (click)="confirmPasswordHide = !confirmPasswordHide">
+        {{ confirmPasswordHide ? "visibility_off" : "visibility" }}
+      </mat-icon>
+    </mat-form-field>
+    <div
+      class="text-red-400"
+      *ngIf="
+        registerForm.controls['confirmPassword'].invalid &&
+        (registerForm.controls['confirmPassword'].touched ||
+          registerForm.controls['confirmPassword'].dirty)
+      "
+    >
+      <span
+        *ngIf="registerForm.controls['confirmPassword'].errors?.['required']"
+        >Confirm Password is required</span
+      >
+    </div>
+
+    <span
+      class="text-red-500"
+      *ngIf="
+        registerForm.hasError('passwordMismatch') &&
+        registerForm.get('confirmPassword')?.dirty &&
+        registerForm.get('confirmPassword')?.touched
+      "
+      >Password do not match
+    </span>
+
+    <button
+      *ngIf="isLoading"
+      [disabled]="registerForm.invalid"
+      type="submit"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md w-full disabled:opacity-50 rounded-md"
+    >
+      Please wait...
+    </button>
+
+    <button
+      *ngIf="!isLoading"
+      [disabled]="registerForm.invalid"
+      class="w-full border-collapse border-slate-200 disabled:bg-purple-400 py-2 px-3 bg-purple-700 text-white rounded-md"
+      type="submit"
+    >
+      Register
+    </button>
+  </form>
+</div>

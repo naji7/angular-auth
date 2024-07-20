@@ -1,0 +1,76 @@
+<div class="h-screen flex items-center justify-center">
+  <form
+    class="form max-w-xs items-center"
+    [formGroup]="form"
+    (ngSubmit)="login()"
+  >
+    <div class="text-center mb-10">
+      <h1 class="text-dark mb-3">Sign In to Locally</h1>
+      <div class="text-gray-400 fw-bold fs-4">
+        <label appCustomLabel>New Here?</label>
+        <a
+          routerLink="/registration"
+          class="text-sky-500 font-semibold ml-2"
+          [routerLink]="['/register']"
+          >Sign Up</a
+        >
+      </div>
+    </div>
+
+    <div *ngIf="!hasError">
+      <div class="mb-10 bg-sky-200 p-4 rounded-md">
+        <div class="text-cyan-600">
+          Use account
+          <span class="text-sky-800">{{ defaultAuth.email }}</span> and password
+          <span class="text-sky-800">{{ defaultAuth.password }}</span> to
+          continue.
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="hasError">
+      <div class="mb-10 bg-rose-200 p-4 rounded-md">
+        <div class="text-red-600">The login details are incorrect</div>
+      </div>
+    </div>
+
+    <mat-form-field apperance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email" />
+
+      <mat-icon matPrefix>email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field apperance="fill" class="w-full">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        placeholder="Password"
+        type="{{ hide ? 'password' : 'text' }}"
+        formControlName="password"
+      />
+      <mat-icon matPrefix>lock</mat-icon>
+      <mat-icon class="cursor-pointer" (click)="hide = !hide" matSuffix>{{
+        hide ? "visibility_off" : "visibility"
+      }}</mat-icon>
+    </mat-form-field>
+
+    <button
+      *ngIf="isLoading"
+      [disabled]="form.invalid"
+      type="submit"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md w-full disabled:opacity-50 rounded-md"
+    >
+      Please wait...
+    </button>
+
+    <button
+      *ngIf="!isLoading"
+      [disabled]="form.invalid"
+      type="submit"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md w-full disabled:opacity-50 rounded-md"
+    >
+      Login
+    </button>
+  </form>
+</div>
